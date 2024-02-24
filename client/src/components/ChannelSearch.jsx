@@ -23,10 +23,12 @@ const ChannelSearch = () => {
   }
 
   return (
-    <div>
-        <div className='flex items-center border rounded-lg p-2'>
-        <IoSearch color='white' className='text-xl mr-2'/>
-        <input type='text' placeholder='Search' className='bg-transparent outline-none' value={query} onChange={onSearch} />
+    <div className='channel-search__container'>
+        <div className='channel-search__input__wrapper'>
+            <div className='channel-search__input__icon'>
+            <IoSearch />
+            </div>
+            <input type="text" className='channel-search__input__text' placeholder='Search' value={query} onChange={onSearch} />
         </div>
     </div>
   )
