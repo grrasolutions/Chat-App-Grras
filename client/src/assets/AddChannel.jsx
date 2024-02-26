@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const AddChannel = ({ setCreateType, setIsCreating, setIsEditing, setToggleContainer, type , setIsProfileToggled }) => (
+export const AddChannel = ({ setCreateType, setIsCreating, setIsEditing,  type   }) => (
   <svg
     width='14'
     height='14'

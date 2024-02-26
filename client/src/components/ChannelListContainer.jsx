@@ -52,7 +52,7 @@ const SideBar = () => {
   };
 
 
-const ChannelListContainer = () => {
+const ChannelListContainer = ({isCreating , setCreateType , setIsCreating , setIsEditing}) => {
 
   return (
     <>
@@ -67,7 +67,12 @@ const ChannelListContainer = () => {
         List={(listProps)=>{
           return (
             <TeamChannelList {...listProps}
-            type="team"/>
+            type="team"
+            isCreating={isCreating}
+            setIsCreating={setIsCreating}
+            setIsEditing={setIsEditing}
+            setCreateType={setCreateType}
+            />
           )
         }}
         Preview={(previewProps)=>{
@@ -82,7 +87,12 @@ const ChannelListContainer = () => {
         List={(listProps)=>{
           return (
             <TeamChannelList {...listProps}
-            type="messaging"/>
+            type="messaging"
+            isCreating={isCreating}
+            setIsCreating={setIsCreating}
+            setIsEditing={setIsEditing}
+            setCreateType={setCreateType}
+            />
           )
         }}
         Preview={(previewProps)=>{

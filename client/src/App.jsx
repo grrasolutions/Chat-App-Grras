@@ -13,7 +13,7 @@ let apiKey = import.meta.env.VITE_API_KEY;
   
 
   const authToken = cookies.get('token');
-  const client = StreamChat.getInstance(apiKey);
+  const clients = StreamChat.getInstance(apiKey);
 
 function App() {
   const [createType , setCreateType] = useState('');
@@ -21,7 +21,7 @@ function App() {
   const [isEditing , setIsEditing] = useState(false);
 
   if(authToken){
-    client.connectUser({
+    clients.connectUser({
       id : cookies.get("userId"),
       name : cookies.get("userName"),
       fullName : cookies.get("fullName"),
@@ -35,7 +35,7 @@ function App() {
 
   return (
     <div className='app__wrapper'>
-      <Chat client={client}>
+      <Chat client={clients}>
         <ChannelListContainer
         isCreating={isCreating}
         setIsCreating={setIsCreating}

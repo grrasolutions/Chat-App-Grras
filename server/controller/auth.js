@@ -22,7 +22,7 @@ const login = async (req,res)=>{
         const serverClient = connect(api_key, api_secret, app_id);
         const client = StreamChat.getInstance(api_key,api_secret);
        
-        const { users } = await client.queryUsers({ name : userName});
+        const { users } = await client.queryUsers({ name : { $autocomplete : userName } });
         
 
         if(!users.length) return res.status(400).json({ message : "User not found" });
