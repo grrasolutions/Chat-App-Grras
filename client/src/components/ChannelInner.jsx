@@ -5,7 +5,7 @@ import { IoMdInformationCircleOutline } from "react-icons/io";
 
 export const GiphyContext = React.createContext({});
 
-const ChannelInner = () => {
+const ChannelInner = ({setIsEditing}) => {
   const [giphyState , setGiphyState] = useState(false);
   const { sendMessage } = useChannelActionContext();
 
@@ -32,7 +32,7 @@ const ChannelInner = () => {
   return (
 
     <GiphyContext.Provider value={{ giphyState , setGiphyState }}>
-      <div>
+      <div className='channel-inner__container' style={{ display: 'flex', width: '100%' }}>
         <Window>
           <TeamChannelHeader setIsEditing={setIsEditing} />
           <MessageList />
@@ -54,11 +54,11 @@ const TeamChannelHeader = ({ setIsEditing })=>{
 
     if(channel.type === 'messaging'){
       return (
-        <div>
+        <div className='team-channel-header__name-wrapper'>
           {members.map(({user} , i) => (
-            <div key={i}>
+             <div key={i} className='team-channel-header__name-multi'>
               <Avatar image={user.image} name={user.fullName || user.id} size = {32}  />
-              <p>
+              <p className='team-channel-header__name user'>
                 {user.fullName || user.id}
               </p>
             </div>
@@ -70,11 +70,11 @@ const TeamChannelHeader = ({ setIsEditing })=>{
     }
 
     return (
-      <div>
-        <p>
+      <div className='team-channel-header__channel-wrapper'>
+          <p className='team-channel-header__name'>
           # {channel.data.name}
         </p>
-        <span onClick={()=> setIsEditing(true)}>
+        <span style={{ display: 'flex' }} onClick={()=> setIsEditing(true)}>
           <IoMdInformationCircleOutline />
         </span>
       </div>
@@ -88,12 +88,12 @@ const TeamChannelHeader = ({ setIsEditing })=>{
   }
 
   return (
-    <div>
-      <MessagingHeader />
-      <div>
-        <p>{getWatcherText(watcher_count)}</p>
-      </div>
+    <div className='team-channel-header__container'>
+    <MessagingHeader />
+    <div className='team-channel-header__right'>
+      <p className='team-channel-header__right-text'>{getWatcherText(watcher_count)}</p>
     </div>
+  </div>
   )
 }
 

@@ -1,54 +1,60 @@
 import { useState } from 'react';
-import { StreamChat } from 'stream-chat';
-import { Chat } from 'stream-chat-react'; 
-import { ChannelListContainer , ChannelContainer , Auth } from './components/index';
-import Cookies from 'universal-cookie';
+import { StreamChat } from "stream-chat";
+import { Chat } from "stream-chat-react";
+import Cookies from "universal-cookie";
+import { ChannelListContainer , ChannelContainer , Auth } from './components';
 import "./App.css"
 import 'stream-chat-react/dist/css/index.css'
 
 
+
 const cookies = new Cookies();
 
-let apiKey = import.meta.env.VITE_API_KEY;
-  
 
-  const authToken = cookies.get('token');
-  const clients = StreamChat.getInstance(apiKey);
+const apiKey = "th58g5yej5gw";
+const authToken = cookies.get("token");
+const clients = StreamChat.getInstance(apiKey);
+console.log(clients)
+
+if(authToken){
+  clients.connectUser({
+    id : cookies.get("userId"),
+    name :cookies.get("userName"),
+    fullName : cookies.get("fullName"),
+    image : cookies.get("avatarUrl"),
+    hashedPassword : cookies.get("hashedPassword"),
+    phoneNumber : cookies.get("phoneNumber"),
+  }, authToken)
+}
+
+
 
 function App() {
   const [createType , setCreateType] = useState('');
-  const [isCreating , setIsCreating] = useState(false);
-  const [isEditing , setIsEditing] = useState(false);
-
-  if(authToken){
-    clients.connectUser({
-      id : cookies.get("userId"),
-      name : cookies.get("userName"),
-      fullName : cookies.get("fullName"),
-      image : cookies.get("avatarUrl"),
-      hashedPassword : cookies.get("hashedPassword"),
-      phoneNumber : cookies.get("phoneNumber")
-    },authToken)
-  }
-
+  const [isCreating , setIsCreating] = useState('');
+  const [isEditing , setIsEditing] = useState('');
+ 
   if(!authToken) return <Auth />
 
   return (
     <div className='app__wrapper'>
-      <Chat client={clients}>
-        <ChannelListContainer
+      <Chat client={clients} >
+        <ChannelListContainer 
         isCreating={isCreating}
         setIsCreating={setIsCreating}
-        setCreateType = {setCreateType}
-        setIsEditing = {setIsEditing}
+        setCreateType={setCreateType}
+        setIsEditing={setIsEditing}
+        
         />
+        
         <ChannelContainer 
-        isCreating= {isCreating}
-        setIsCreating = {setIsCreating}
-        isEditing  = {isEditing}
-        setIsEditing = {setIsEditing}
-        createType =  {createType}
+        isCreating={isCreating}
+        setIsCreating={setIsCreating}
+        isEditing={isEditing}
+        setIsEditing={setIsEditing}
+        createType={createType}
         />
+        
       </Chat>
       
     </div>

@@ -1,52 +1,55 @@
-import React, { useState } from 'react';
-import Cookies from 'universal-cookie';
-import axios from 'axios';
+import React, { useState } from "react";
+import Cookies from "universal-cookie";
+import axios from "axios";
 import signInImage from "../assets/signup.jpg";
 
+const cookies = new Cookies();
 const initialState = {
-    fullName : "",
-    userName : "",
-    phoneNumber : "",
-    avatarUrl : "",
-    password : "",
-    confirmPassword : ""
+  fullName : '',
+  userName : '',
+  password : '',
+  confirmPassword : '',
+  phoneNumber : '',
+  avatarUrl : ''
 }
 
-const cookies = new Cookies();
-
-
 const Auth = () => {
-    const [isSignUp , setIsSignUp] = useState(false);
-    const [form , setForm] = useState(initialState);
 
-    const handleChange = (e)=>{
-        setForm({...form , [e.target.name] : e.target.value})
-        console.log("hello")
-    }
 
-    const switchMode = ()=>{
-        setIsSignUp(!isSignUp);
-    }
+  const [isSignUp, setIsSignUp] = useState(true);
+  const [form , setForm] = useState(initialState)
 
-    const handleSubmit = async (e)=>{
-        e.preventDefault()
-        const { fullName , userName , password , phoneNumber , avatarUrl } = form;
-        const URL = 'http://localhost:5000/auth';
-        const { data : { token , userId , hashedPassword } } = await axios.post(`${URL}/${isSignUp ? 'signup' : 'login'}`,{
-            userName , password , fullName , phoneNumber , avatarUrl
-        })
-        
-        cookies.set('token' , token);
-        cookies.set('userName', userName)
-        cookies.set('userId', userId);
-        if(isSignUp){
-            cookies.set('fullName' , fullName)
-            cookies.set('phoneNumber' , phoneNumber)
-            cookies.set('avatarUrl' , avatarUrl)
-        }
-        window.location.reload();
-    }
+  const handleChange = (e) => {
+    setForm({...form , [e.target.name] : e.target.value})
+
+    console.log(form)
+  };
+
+  const handleSubmit = async (e)=>{
+    e.preventDefault();
+    const { fullName , userName , password , phoneNumber , avatarUrl } = form;
+    const URL = "http://localhost:5000/auth";
+    const { data : {token , userId , hashedPassword} } = await axios.post(`${URL}/${isSignUp ? 'signup' : 'login'}`, {
+      userName , password , fullName , phoneNumber , avatarUrl
+    })
+    cookies.set('token',token)
+    cookies.set('userName',userName)
     
+    cookies.set('userId',userId)
+
+    if(isSignUp){
+      cookies.set('fullName',fullName)
+      cookies.set('phoneNumber' , phoneNumber)
+      cookies.set('avatarUrl' , avatarUrl)
+      cookies.set('hashedPassword' , hashedPassword)
+    }
+    window.location.reload();
+    console.log(form)
+  }
+
+  const switchMode = () => {
+    setIsSignUp((prev) => !prev);
+  };
   return (
     <div className="auth__form-container">
       <div className="auth__form-container_fields">
@@ -138,7 +141,7 @@ const Auth = () => {
         <img src={signInImage} alt="sign in" />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Auth
+export default Auth;

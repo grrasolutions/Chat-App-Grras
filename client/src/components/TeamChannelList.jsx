@@ -1,18 +1,17 @@
 import React from 'react'
-import { AddChannel } from '../assets/AddChannel' 
 
-const TeamChannelList = ({children , error = false , loading , type , setCreateType , setIsCreating   , setIsEditing , isCreating}) => {
-    console.log(error)
+import { AddChannel } from '../assets/AddChannel';
+
+const TeamChannelList = ({children , error= false , loading , type , isCreating , setIsCreating , setCreateType , setIsEditing  , setToggleContainer }) => {
+    
     if(error){
-        return type === "team" ? 
-        (
+        return type === 'team' ? (
             <div className='team-channel-list'>
                 <p className='team-channel-list__message'>
                     Connection error, Please wait and try again.
                 </p>
             </div>
-        )
-        : null
+        ) : null ;
     }
 
     if(loading){
@@ -24,15 +23,21 @@ const TeamChannelList = ({children , error = false , loading , type , setCreateT
         </div>
         )
     }
-
-
   return (
     <div className='team-channel-list'>
         <div className='team-channel-list__header'>
             <p className='team-channel-list__header__title'>
-                {type === "team" ? "Channels" : "Direct Messages"}
+            {type === 'team' ? "Channel" : "Direct Messages"}
             </p>
-            <AddChannel setCreateType={setCreateType} setIsCreating={setIsCreating} setIsEditing={setIsEditing} type={type === 'team' ? 'team' : 'messaging'}  />
+            <AddChannel 
+            isCreating = {isCreating}
+            setIsCreating= {setIsCreating} 
+            setCreateType = {setCreateType} 
+            setIsEditing = {setIsEditing}
+            setToggleContainer={setToggleContainer}
+            type={type === "team" ? "team" : "messaging"}
+            
+            />
         </div>
         {children}
     </div>
