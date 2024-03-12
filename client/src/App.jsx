@@ -5,7 +5,7 @@ import Cookies from "universal-cookie";
 import { ChannelListContainer , ChannelContainer , Auth } from './components';
 import "./App.css"
 import 'stream-chat-react/dist/css/index.css'
-
+import Profile from './components/Profile';
 
 
 const cookies = new Cookies();
@@ -33,7 +33,8 @@ function App() {
   const [createType , setCreateType] = useState('');
   const [isCreating , setIsCreating] = useState('');
   const [isEditing , setIsEditing] = useState('');
- 
+  const [isProfileToggled , setIsProfileToggled] = useState(false);
+  console.log(isProfileToggled)
   if(!authToken) return <Auth />
 
   return (
@@ -44,19 +45,21 @@ function App() {
         setIsCreating={setIsCreating}
         setCreateType={setCreateType}
         setIsEditing={setIsEditing}
-        
+        setIsProfileToggled={setIsProfileToggled}
         />
-        
+        {!isProfileToggled && (
         <ChannelContainer 
         isCreating={isCreating}
         setIsCreating={setIsCreating}
         isEditing={isEditing}
         setIsEditing={setIsEditing}
         createType={createType}
-        />
+        />)}
         
       </Chat>
-      
+      {isProfileToggled && (
+        <Profile clients={clients} />
+      )}
     </div>
   )
 }

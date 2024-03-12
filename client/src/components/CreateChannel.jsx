@@ -39,7 +39,7 @@ const CreateChannel = ({ createType , setIsCreating }) => {
 
         setChannelName('');
         setIsCreating(false);
-        setSelectedUser([client.userID]);
+        setSelectedUsers([client.userID]);
         setActiveChannel(newChannel);
     } catch (error) {
         console.log(error);

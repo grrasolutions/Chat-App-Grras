@@ -4,11 +4,11 @@ import Cookies from 'universal-cookie';
 import { CiHospital1 } from "react-icons/ci";
 import { IoIosLogOut } from "react-icons/io";
 import {  ChannelSearch , TeamChannelList, TeamChannelPreview } from './'
+import { AiOutlineBars } from "react-icons/ai";  
 import { CgProfile } from "react-icons/cg";
-import { AiOutlineBars } from 'react-icons/ai'
 
 
-const SideBar = ()=>{
+const SideBar = ({setIsProfileToggled , setToggleContainer})=>{
 
   const cookies = new Cookies;
 
@@ -59,29 +59,30 @@ const CompanyHeader = ()=> {
   )
 }
 
-const customChannelTeamFilter = (channels)=>{
-  return channels.filter((channel)=>channel.type=== 'team')
+const CustomChannelTeamFilter = (channels)=>{
+  
+  return channels.filter((channel)=> channel.type === 'team')
+}
+const CustomChannelMessagingFilter = (channels)=>{
+  return channels.filter((channel)=> channel.type === 'messaging')
 }
 
-const customChannelMessageFilter = (channels)=>{
-  return channels.filter((channel)=>channel.type === 'messaging')
-}
 
+function ChannelListContent({ isCreating , setIsCreating , setCreateType , setIsEditing , setToggleContainer , setIsProfileToggled }) {
+  const { client } =  useChatContext();
+ 
 
-const ChannelListContent = ({isCreating ,  setCreateType, setIsCreating, setIsEditing , setToggleContainer }) => {
- const { client } = useChatContext();
-
- const filters = { members : { $in :  [client.userID] } };
-
+  const filters = { members: { $in: [client.userID] } };
+ 
   return (
     <>
-    <SideBar />
+    <SideBar setIsProfileToggled={setIsProfileToggled} setToggleContainer={setToggleContainer} />
     <div className='channel-list__list__wrapper'>
     <CompanyHeader /> 
-    <ChannelSearch  />
+    <ChannelSearch setToggleContainer={setToggleContainer} />
     <ChannelList 
     filters={filters}
-    channelRenderFilterFn={(channel)=>{customChannelTeamFilter(channel)}}
+    channelRenderFilterFn={(channels)=>CustomChannelTeamFilter(channels)}
     List={(listProps)=>{ 
       return (
       <TeamChannelList 
@@ -92,21 +93,23 @@ const ChannelListContent = ({isCreating ,  setCreateType, setIsCreating, setIsEd
       setCreateType = {setCreateType} 
       setIsEditing = {setIsEditing}
       setToggleContainer={setToggleContainer}
+        setIsProfileToggled={setIsProfileToggled}
       />
     )}}
     Preview={(previewProps)=>(
       <TeamChannelPreview 
       {...previewProps}
       setIsCreating={setIsCreating}
-                            setIsEditing={setIsEditing}   
-                            setToggleContainer={setToggleContainer}                   
+                            setIsEditing={setIsEditing}
+                            setToggleContainer={setToggleContainer}
+        setIsProfileToggled={setIsProfileToggled}
       type="team"
       />
     )}
     />
     <ChannelList 
     filters={filters}
-    channelRenderFilterFn={(channel)=>{customChannelMessageFilter(channel)}}
+    channelRenderFilterFn={CustomChannelMessagingFilter}
     List={(listProps)=>(
       <TeamChannelList 
       {...listProps}
@@ -116,6 +119,7 @@ const ChannelListContent = ({isCreating ,  setCreateType, setIsCreating, setIsEd
       setCreateType = {setCreateType} 
       setIsEditing = {setIsEditing}
       setToggleContainer={setToggleContainer}
+        setIsProfileToggled={setIsProfileToggled}
       />
     )}
     Preview={(previewProps)=>(
@@ -123,8 +127,8 @@ const ChannelListContent = ({isCreating ,  setCreateType, setIsCreating, setIsEd
       {...previewProps}
       setIsCreating={setIsCreating}
                             setIsEditing={setIsEditing}
-                            setToggleContainer={setToggleContainer}
-      
+      setToggleContainer={setToggleContainer} 
+      setIsProfileToggled={setIsProfileToggled}
       type="messaging"
       />
     )}
@@ -134,28 +138,42 @@ const ChannelListContent = ({isCreating ,  setCreateType, setIsCreating, setIsEd
     
     </>
   )
-
 }
 
-const ChannelListContainer = ({setCreateType , setIsCreating , setIsEditing })=>{
-  const [toggleConatiner , setToggleContainer] = useState(false);
+
+const ChannelListContainer = ({ setCreateType, setIsCreating, setIsEditing , setIsProfileToggled }) => {
+  const [toggleContainer, setToggleContainer] = useState(false);
+  console.log(toggleContainer)
 
   return (
-    <>
-    <div className='channel-list__container'>
-      <ChannelListContent setIsCreating={setIsCreating} setCreateType={setCreateType} setIsEditing={setIsEditing} setToggleContainer={setToggleContainer} />
-      </div>
-      
-      <div className='channel-list__container-responsive'
-      style={{ left : toggleConatiner ? "0%" : "-79%" , backgroundColor : "#005fff"}}
-      >
-        <div className='channel-list__container-toggle' onClick={()=> setToggleContainer((prevState)=> !prevState)} >
-          <AiOutlineBars color='white' fontWeight='bold' /></div>
-          <ChannelListContent setIsCreating={setIsCreating} setIsEditing={setIsEditing} setCreateType={setCreateType} setToggleContainer={setToggleContainer} />
-        
-      </div>
+      <>
+          <div className="channel-list__container">
+            <ChannelListContent 
+              setIsCreating={setIsCreating} 
+              setCreateType={setCreateType} 
+              setIsEditing={setIsEditing} 
+              setToggleContainer={setToggleContainer}
+              setIsProfileToggled={setIsProfileToggled}
+              
+            />
+          </div>
+
+          <div className="channel-list__container-responsive"
+              style={{ left: toggleContainer ? "0%" : "-79%", backgroundColor: "#005fff"}}
+          >
+              <div className="channel-list__container-toggle" onClick={() => setToggleContainer((prevToggleContainer) => !prevToggleContainer)}>
+              <AiOutlineBars color='white' fontWeight='bold' /></div>
+              <ChannelListContent 
+              setIsCreating={setIsCreating} 
+              setCreateType={setCreateType} 
+              setIsEditing={setIsEditing}
+              setToggleContainer={setToggleContainer}
+              setIsProfileToggled={setIsProfileToggled}
+            />
+          </div>
       </>
   )
+
 }
 
 export default ChannelListContainer

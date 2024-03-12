@@ -77,21 +77,21 @@ const UserList = ({ setSelectedUsers }) => {
     if(error) {
         return (
             <ListContainer>
-            <div className='user-list__message'>
-                Error Loading , please refresh and try again.
-            </div>
+                <div className="user-list__message">
+                    Error loading, please refresh and try again.
+                </div>
             </ListContainer>
-        );
+        )
     }
 
     if(listEmpty) {
         return (
             <ListContainer>
-                <div className='user-list__message'>
-                    No Users Found.
+                <div className="user-list__message">
+                    No users found.
                 </div>
             </ListContainer>
-        );
+        )
     }
 
     return (
